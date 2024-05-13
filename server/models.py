@@ -10,3 +10,16 @@ metadata = MetaData(naming_convention={
 db = SQLAlchemy(metadata=metadata)
 
 # write your models here!
+class Sport(db.Model):
+    __tablename__ = "sports_table"
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String)
+    representitive = db.Column(db.String)
+
+    def to_dict(self):
+        return {
+            'id':self.id,
+            'name':self.name,
+            'representitive':self.representitive
+        }

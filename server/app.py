@@ -5,7 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
 
-from models import db # import your models here!
+from models import db, Sport
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'
@@ -22,6 +22,16 @@ db.init_app(app)
 def index():
     return "Hello world"
 
+@app.get('/sports')
+def all_sports():
+    return [sport.to_dict() for sport in Sport.query.all()],200
+
+@app.post('/sports')
+def post_sport():
+    new_sport = Sport(name = request.json['name'], representitive = request.json['representitive'])
+    db.session.add(new_sport)
+    db.session.commit()
+    return new_sport.to_dict(), 201
 # write your routes here!
 
 if __name__ == '__main__':
